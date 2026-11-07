@@ -1,0 +1,31 @@
+name: studyforge
+description: A private, offline-capable study companion for university students.
+publish_to: none
+version: 1.0.0+1
+environment:
+  sdk: '>=3.9.0 <4.0.0'
+dependencies:
+  flutter:
+    sdk: flutter
+  sqflite: 2.4.2
+  path: 1.9.1
+  path_provider: 2.1.5
+  path_provider_android: 2.2.20 # Stable platform-channel implementation; avoids a native JNI toolchain.
+  file_picker: 10.3.8
+  pdfx: 2.9.2
+  archive: 4.0.7
+  uuid: 4.5.2
+  flutter_local_notifications: 19.5.0
+  timezone: 0.10.1
+  flutter_timezone: 4.1.1
+  http: 1.5.0
+  intl: 0.20.2
+  url_launcher: 6.3.2
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: 5.0.0
+  sqflite_common_ffi: 2.3.6
+  sqlite3: 2.9.4 # Tests use the host SQLite library; no downloaded native hook.
+flutter:
+  uses-material-design: true
