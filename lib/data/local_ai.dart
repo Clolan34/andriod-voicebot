@@ -23,20 +23,29 @@ class PhoneAiEngine implements StudyAiEngine {
       throw UnsupportedError('On-device AI is available in the Android app.');
     }
     if (_loaded) return;
-    await _channel.invokeMethod<void>('load', {'path': path, 'session': _session});
+    await _channel.invokeMethod<void>('load', {
+      'path': path,
+      'session': _session,
+    });
     _loaded = true;
   }
 
   @override
   Future<int> tokenCount(String prompt) async {
-    final count = await _channel.invokeMethod<int>('tokenCount', {'prompt': prompt, 'session': _session});
+    final count = await _channel.invokeMethod<int>('tokenCount', {
+      'prompt': prompt,
+      'session': _session,
+    });
     if (count == null) throw StateError('Could not check the input size.');
     return count;
   }
 
   @override
   Future<String> complete(String prompt) async {
-    final text = await _channel.invokeMethod<String>('generate', {'prompt': prompt, 'session': _session});
+    final text = await _channel.invokeMethod<String>('generate', {
+      'prompt': prompt,
+      'session': _session,
+    });
     if (text == null || text.trim().isEmpty) {
       throw StateError('No answer was produced. Try a shorter question.');
     }
@@ -45,7 +54,9 @@ class PhoneAiEngine implements StudyAiEngine {
 
   @override
   Future<void> stop() async {
-    if (_loaded) await _channel.invokeMethod<void>('stop', {'session': _session});
+    if (_loaded) {
+      await _channel.invokeMethod<void>('stop', {'session': _session});
+    }
   }
 
   @override
@@ -74,9 +85,13 @@ class LocalStudyAi {
     List<StudyAiTurn> history = const [],
   }) {
     if (_closed || _pending != null) throw StateError('AI is busy or closed.');
-    if (input.trim().isEmpty) throw const FormatException('Enter some text first.');
+    if (input.trim().isEmpty) {
+      throw const FormatException('Enter some text first.');
+    }
     if (input.length > 6000 || notes.length > 6000) {
-      throw const FormatException('Use a shorter passage (up to 6,000 characters).');
+      throw const FormatException(
+        'Use a shorter passage (up to 6,000 characters).',
+      );
     }
     _stopped = false;
     final task = _answer(modelPath, mode, input, notes, history);
@@ -84,19 +99,33 @@ class LocalStudyAi {
     return task.whenComplete(() => _pending = null);
   }
 
-  Future<String> _answer(String path, StudyAiMode mode, String input,
-      String notes, List<StudyAiTurn> history) async {
+  Future<String> _answer(
+    String path,
+    StudyAiMode mode,
+    String input,
+    String notes,
+    List<StudyAiTurn> history,
+  ) async {
     await engine.load(path);
-    var recent = history.length > 2 ? history.sublist(history.length - 2) : [...history];
+    var recent = history.length > 2
+        ? history.sublist(history.length - 2)
+        : [...history];
     while (true) {
       if (_stopped || _closed) throw StateError('Generation stopped.');
-      final prompt = studyAiPrompt(mode: mode, input: input.trim(), notes: notes, history: recent);
+      final prompt = studyAiPrompt(
+        mode: mode,
+        input: input.trim(),
+        notes: notes,
+        history: recent,
+      );
       if (await engine.tokenCount(prompt) <= 1500) {
         if (_stopped || _closed) throw StateError('Generation stopped.');
         return engine.complete(prompt);
       }
       if (recent.isEmpty || mode == StudyAiMode.summary) {
-        throw const FormatException('This passage is too long for the phone model. Split it into smaller sections.');
+        throw const FormatException(
+          'This passage is too long for the phone model. Split it into smaller sections.',
+        );
       }
       recent = recent.sublist(1);
     }

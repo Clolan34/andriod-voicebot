@@ -16,8 +16,9 @@ import 'ui/settings.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   LicenseRegistry.addLicense(() async* {
-    yield LicenseEntryWithLineBreaks(['llama.cpp'],
-      await rootBundle.loadString('assets/llama-license.txt'));
+    yield LicenseEntryWithLineBreaks([
+      'llama.cpp',
+    ], await rootBundle.loadString('assets/llama-license.txt'));
   });
   try {
     final store = await StudyStore.open();

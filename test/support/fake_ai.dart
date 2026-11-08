@@ -19,12 +19,17 @@ class FakeEngine implements StudyAiEngine {
     if (pending != null) return pending!.future;
     return 'An explanation.';
   }
+
   @override
   Future<void> stop() async {
     stops++;
-    if (pending != null && !pending!.isCompleted) pending!.complete('Partial answer');
+    if (pending != null && !pending!.isCompleted) {
+      pending!.complete('Partial answer');
+    }
   }
-  @override
-  Future<void> close() async { closed = true; }
-}
 
+  @override
+  Future<void> close() async {
+    closed = true;
+  }
+}

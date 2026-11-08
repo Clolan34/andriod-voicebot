@@ -102,9 +102,15 @@ class DocumentPage extends StatelessWidget {
               if (e.body.trim().isNotEmpty) ...[
                 const SizedBox(height: 16),
                 OutlinedButton.icon(
-                  onPressed: () => Navigator.push(context,
-                    MaterialPageRoute<void>(builder: (_) => StudyAiPage(
-                      initialText: e.body, courseId: e.courseId))),
+                  onPressed: () => Navigator.push(
+                    context,
+                    MaterialPageRoute<void>(
+                      builder: (_) => StudyAiPage(
+                        initialText: e.body,
+                        courseId: e.courseId,
+                      ),
+                    ),
+                  ),
                   icon: const Icon(Icons.auto_awesome_outlined),
                   label: const Text('Summarize written text with AI'),
                 ),

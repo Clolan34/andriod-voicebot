@@ -94,8 +94,10 @@ class _SettingsPageState extends State<SettingsPage> {
             leading: const Icon(Icons.psychology_outlined),
             title: const Text('Free offline AI'),
             subtitle: const Text('Tutor, summarizer and model storage'),
-            onTap: () => Navigator.push(context,
-              MaterialPageRoute<void>(builder: (_) => const StudyAiPage())),
+            onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute<void>(builder: (_) => const StudyAiPage()),
+            ),
           ),
           const Section('Reminders'),
           SwitchListTile(
@@ -229,8 +231,10 @@ class _SettingsPageState extends State<SettingsPage> {
             icon: const Icon(Icons.delete_forever_outlined),
             label: const Text('Delete all data'),
           ),
-          TextButton(onPressed: () => showLicensePage(context: context),
-            child: const Text('Open-source licenses')),
+          TextButton(
+            onPressed: () => showLicensePage(context: context),
+            child: const Text('Open-source licenses'),
+          ),
           const SizedBox(height: 24),
           const Text(
             'StudyForge 1.1 • Testing build\nMade for focused, affordable study.',

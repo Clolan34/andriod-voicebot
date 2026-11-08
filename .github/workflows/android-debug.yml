@@ -29,9 +29,7 @@ jobs:
       - run: sudo apt-get update && sudo apt-get install -y libsqlite3-0
       - run: sdkmanager 'platforms;android-36' 'build-tools;36.0.0' 'ndk;27.0.12077973' 'cmake;3.22.1'
       - run: flutter pub get
-      - run: dart format lib test
-      - name: Show resolved source formatting and lockfile
-        run: git diff -- lib test pubspec.lock
+      - run: dart format --output=none --set-exit-if-changed lib test
       - run: flutter analyze
       - run: flutter test
       - run: flutter build apk --debug

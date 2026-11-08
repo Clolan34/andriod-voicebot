@@ -25,7 +25,9 @@ class AiModelFile {
   AiModelFile(this.root, {this.expectedHash = modelSha256});
 
   static Future<AiModelFile> open() async => AiModelFile(
-    Directory(p.join((await getApplicationSupportDirectory()).path, 'ai-model')),
+    Directory(
+      p.join((await getApplicationSupportDirectory()).path, 'ai-model'),
+    ),
   );
 
   File get file => File(p.join(root.path, 'smollm2.gguf'));
@@ -34,9 +36,12 @@ class AiModelFile {
 
   Future<void> verify() async {
     final length = await file.length();
-    if (length == 0 || length > maxBytes ||
+    if (length == 0 ||
+        length > maxBytes ||
         (await sha256.bind(file.openRead()).first).toString() != expectedHash) {
-      throw const FormatException('Model verification failed. Remove it and download again.');
+      throw const FormatException(
+        'Model verification failed. Remove it and download again.',
+      );
     }
   }
 
@@ -58,7 +63,9 @@ class AiModelFile {
       await for (final chunk in stream.timeout(const Duration(seconds: 60))) {
         if (_cancelled) throw StateError('Model setup cancelled.');
         bytes += chunk.length;
-        if (bytes > maxBytes) throw const FormatException('Model file is too large.');
+        if (bytes > maxBytes) {
+          throw const FormatException('Model file is too large.');
+        }
         sink.add(chunk);
         // Keep writes bounded rather than queuing the entire model in memory.
         await sink.flush();
@@ -68,8 +75,11 @@ class AiModelFile {
       sink = null;
       if (_cancelled) throw StateError('Model setup cancelled.');
       if (bytes == 0 ||
-          (await sha256.bind(partial.openRead()).first).toString() != expectedHash) {
-        throw const FormatException('The file is incomplete or is not the supported SmolLM2 model.');
+          (await sha256.bind(partial.openRead()).first).toString() !=
+              expectedHash) {
+        throw const FormatException(
+          'The file is incomplete or is not the supported SmolLM2 model.',
+        );
       }
       if (_cancelled) throw StateError('Model setup cancelled.');
       await partial.rename(file.path);
@@ -84,11 +94,13 @@ class AiModelFile {
 
   Future<void> download(void Function(int) onProgress) => _install(() async {
     final client = _client = http.Client();
-    final response = await client.send(
-      http.Request('GET', Uri.parse(downloadUrl)),
-    ).timeout(const Duration(seconds: 30));
+    final response = await client
+        .send(http.Request('GET', Uri.parse(downloadUrl)))
+        .timeout(const Duration(seconds: 30));
     if (response.statusCode != 200) {
-      throw const HttpException('Model download unavailable. Retry or import the model file.');
+      throw const HttpException(
+        'Model download unavailable. Retry or import the model file.',
+      );
     }
     if ((response.contentLength ?? 0) > maxBytes) {
       throw const FormatException('Model download is too large.');

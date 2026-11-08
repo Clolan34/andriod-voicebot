@@ -128,8 +128,10 @@ class HomePage extends StatelessWidget {
               ActionChip(
                 avatar: const Icon(Icons.psychology_outlined),
                 label: const Text('AI tutor & summary'),
-                onPressed: () => Navigator.push(context,
-                  MaterialPageRoute<void>(builder: (_) => const StudyAiPage())),
+                onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute<void>(builder: (_) => const StudyAiPage()),
+                ),
               ),
               ActionChip(
                 avatar: const Icon(Icons.note_add_outlined),
