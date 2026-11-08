@@ -199,8 +199,10 @@ void main() {
         Directory('${root.path}/ai'),
         expectedHash: sha256.convert(bytes).toString(),
       );
-      await model.root.create();
-      await model.file.writeAsBytes(bytes);
+      await tester.runAsync(() async {
+        await model.root.create();
+        await model.file.writeAsBytes(bytes);
+      });
       final engine = FakeEngine();
       await tester.pumpWidget(
         MaterialApp(
@@ -236,8 +238,10 @@ void main() {
       Directory('${root.path}/ai'),
       expectedHash: sha256.convert(bytes).toString(),
     );
-    await model.root.create();
-    await model.file.writeAsBytes(bytes);
+    await tester.runAsync(() async {
+      await model.root.create();
+      await model.file.writeAsBytes(bytes);
+    });
     await tester.pumpWidget(
       AppScope(
         app: app,
