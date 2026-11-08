@@ -1,0 +1,30 @@
+cmake_minimum_required(VERSION 3.22.1)
+project(studyforge_ai LANGUAGES C CXX)
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_BUILD_TYPE Release CACHE STRING "Native inference optimization" FORCE)
+set(BUILD_SHARED_LIBS OFF CACHE BOOL "" FORCE)
+set(LLAMA_BUILD_COMMON OFF CACHE BOOL "" FORCE)
+set(LLAMA_BUILD_TESTS OFF CACHE BOOL "" FORCE)
+set(LLAMA_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
+set(LLAMA_BUILD_SERVER OFF CACHE BOOL "" FORCE)
+set(LLAMA_BUILD_TOOLS OFF CACHE BOOL "" FORCE)
+set(LLAMA_CURL OFF CACHE BOOL "" FORCE)
+set(GGML_NATIVE OFF CACHE BOOL "Portable CPU instructions" FORCE)
+# Keep the emulator build portable too; GGML_NATIVE=OFF alone retains AVX2 defaults.
+foreach(feature AVX AVX2 BMI2 FMA F16C SSE42)
+    set(GGML_${feature} OFF CACHE BOOL "" FORCE)
+endforeach()
+set(GGML_OPENMP OFF CACHE BOOL "" FORCE)
+set(GGML_LLAMAFILE OFF CACHE BOOL "" FORCE)
+set(GGML_BACKEND_DL OFF CACHE BOOL "" FORCE)
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+
+include(FetchContent)
+# Immutable source archive, verified before it is compiled. No model is bundled.
+FetchContent_Declare(llama
+    URL https://codeload.github.com/ggml-org/llama.cpp/tar.gz/refs/tags/b6500
+    URL_HASH SHA256=f2a188b194f25178460eecda7a7619b34d0b53421588faa2e6f0287a96674f28)
+FetchContent_MakeAvailable(llama)
+add_library(studyforge_ai SHARED local_ai.cpp)
+target_link_libraries(studyforge_ai PRIVATE llama android log)
+target_link_options(studyforge_ai PRIVATE "-Wl,-z,max-page-size=16384")

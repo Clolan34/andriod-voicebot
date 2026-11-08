@@ -1,6 +1,6 @@
 # StudyForge
 
-A Flutter Android study app for university students, with account-free online reference search and persistent offline study tools. No sign-in, sign-up, backend, subscriptions, API keys, AI, advertising or analytics. Internet access is needed only for online reference search and external resource websites. Normal mobile-data charges may apply.
+A Flutter Android study app for university students, with account-free online reference search and persistent offline study tools. Includes an optional free on-device AI tutor and text summarizer. No sign-in, sign-up, backend, subscriptions, API keys, advertising or analytics. Internet access is needed for the one-time model download, online reference search and external resource websites. Normal mobile-data charges may apply.
 
 ## Download the APK from this repository
 
@@ -19,6 +19,7 @@ Android **7.0 / API 24 or newer**. The universal debug APK targets **armeabi-v7a
 
 ## Features
 
+- **Offline AI**: tutor follow-up questions, summaries of pasted text or saved written notes, copy and save responses as course notes. Download the verified 386 MB SmolLM2 model once; no paid API or inference server. See setup below.
 - Home: optional local greeting, today's sessions, pending/overdue assignments, due-card count, real recent quiz results and quick actions.
 - Courses: create/edit/delete, colour, course code and comma-separated topics. Course notes support content/title search, favourites, text and private offline PDFs.
 - Planner: agenda and seven-day timetable, sessions with actual completed minutes, assignments with priority and completion, optional approximate local reminders.
@@ -30,9 +31,19 @@ Android **7.0 / API 24 or newer**. The universal debug APK targets **armeabi-v7a
 - Settings: local profile, system/light/dark appearance, reminder preferences, versioned ZIP backup and atomic replacement restore, confirmed deletion.
 - **Learn online** (Home and Practice): Wikipedia topic search, attributed summaries saved as offline course notes, and links to Khan Academy, OpenStax, MIT OpenCourseWare and freeCodeCamp. Resource links open in the device browser. Search does not generate questions or extract PDF contents. Check reference summaries against your course materials.
 
+## Free AI tutor and summarizer
+
+Open **Home → AI tutor & summary** (also available in Settings). Choose **Download free model** on Wi-Fi, or import `smollm2-360m-instruct-q8_0.gguf` from the [official SmolLM2 model repository](https://huggingface.co/HuggingFaceTB/SmolLM2-360M-Instruct-GGUF). The model is about **386 MB**; allow at least **800 MB free** during installation. A 64-bit Android phone with at least 3 GB RAM is recommended. Existing Android API 24 and APK architectures are preserved, but speed, available memory and model compatibility require phone testing. No API key, paid API, subscription or hosted inference is used. Mobile-data charges can still apply to the model download.
+
+Use **Tutor** for questions and follow-ups; optionally attach a saved written note. The last two exchanges are kept in memory while the screen is open, with older exchanges dropped when necessary to fit. Use **Summarizer** for pasted text or a saved written note. A written document also has a **Summarize written text with AI** button. PDF text extraction and OCR are not included: copy text from a PDF reader and paste it. Long inputs must be split into smaller sections; text is not silently truncated. The limit is 6,000 characters and 1,500 actual model tokens including instructions and context.
+
+Generation uses a 2,048-token CPU context, two threads and at most 400 output tokens. Keep the app open; backgrounding stops generation. Replies can be copied or explicitly saved as offline course notes. Conversations are otherwise cleared on exit. The model can be removed from the AI screen and is excluded from ZIP backups. Saved AI notes are included like other written notes. The small English-language model can produce incorrect or incomplete explanations, especially for advanced mathematics or specialist topics; check course materials. It is not an automatic marker.
+
+Model installation streams to a temporary private file with a size cap and verifies the published SHA-256 before atomic replacement. Loading also verifies the installed file. Only the supported model is accepted. Study text never goes to a remote service during AI generation. The engine is [llama.cpp b6500](https://github.com/ggml-org/llama.cpp/tree/b6500), built from a checksum-pinned archive through CMake, with conservative CPU settings. The first native build needs GitHub access. See [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
+
 ## Run, test and rebuild
 
-Install Flutter **3.38.5 / Dart 3.10.4**, Java 17 or 21, Android SDK command-line tools, Android SDK Platform 36, Build Tools 36.0.0 and NDK 27.0.12077973. Accept Android licences with `flutter doctor --android-licenses`. Android Studio can install these packages. Linux host database tests use `libsqlite3.so.0` (`libsqlite3-0` on Ubuntu/Debian). The host SQLite package is only for tests; Android uses `sqflite` and the OS SQLite implementation.
+Install Flutter **3.38.5 / Dart 3.10.4**, Java 17 or 21, Android SDK command-line tools, Android SDK Platform 36, Build Tools 36.0.0 NDK 27.0.12077973 and CMake 3.22.1. Accept Android licences with `flutter doctor --android-licenses`. Android Studio can install these packages. Linux host database tests use `libsqlite3.so.0` (`libsqlite3-0` on Ubuntu/Debian). The host SQLite package is only for tests; Android uses `sqflite` and the OS SQLite implementation.
 
 ```sh
 flutter doctor -v

@@ -1,3 +1,21 @@
+## AI addition (validation in progress)
+
+The earlier results below describe the pre-AI app. They do not validate this change.
+
+Added automated checks for prompt boundaries, source-only summarization, token budgets, conversation trimming, cancellation, context cleanup and atomic verified model import. GitHub Actions now runs for pull requests, formats Dart source, analyzes it, runs the full Flutter test suite and builds the native Android APK with CMake 3.22.1. Local checks passed: all 31 Dart source/test files parse without syntax errors, the JNI bridge passes a C++17 syntax check against the pinned engine headers, and the JNI bridge plus llama.cpp compile and link as a Linux host shared library. These checks do not establish Flutter type correctness or Android runtime compatibility. Local Flutter tooling is unavailable and its download host is blocked in this session; actual CI results will be recorded after execution.
+
+Phone acceptance checks still required:
+
+- Install without deleting existing study data; open AI from Home, Settings and a written note.
+- Download the model over Wi-Fi; cancel/retry and test wrong-file import, low storage and removal.
+- Enable airplane mode, ask a question and follow-up, summarize a saved note, copy and save an answer.
+- Stop a long answer, background/resume, navigate away during loading/generation and reopen AI.
+- Verify model loading and answer quality on the target phone, memory use, response time, heat and battery use.
+- Confirm long input rejection, PDF text limitation, model exclusion from backup, and saved AI note restoration.
+- Exercise all original study features and APK architectures. Native device/emulator execution has not yet been performed.
+
+---
+
 # Validation — 7 November 2026
 
 ## Application checks

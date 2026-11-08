@@ -6,6 +6,7 @@ import 'common.dart';
 import 'editors.dart';
 import 'focus.dart';
 import 'online.dart';
+import 'ai.dart';
 
 class HomePage extends StatelessWidget {
   final ValueChanged<int> onNavigate;
@@ -124,6 +125,12 @@ class HomePage extends StatelessWidget {
             spacing: 8,
             runSpacing: 8,
             children: [
+              ActionChip(
+                avatar: const Icon(Icons.psychology_outlined),
+                label: const Text('AI tutor & summary'),
+                onPressed: () => Navigator.push(context,
+                  MaterialPageRoute<void>(builder: (_) => const StudyAiPage())),
+              ),
               ActionChip(
                 avatar: const Icon(Icons.note_add_outlined),
                 label: const Text('Add note'),

@@ -3,6 +3,8 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import '../application.dart';
 import 'common.dart';
+import 'ai.dart';
+import '../data/ai_model.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -85,6 +87,15 @@ class _SettingsPageState extends State<SettingsPage> {
                     await app.store.set('theme', value!.name);
                     await app.refreshPreferences();
                   }),
+          ),
+          const Section('AI study tools'),
+          ListTile(
+            contentPadding: EdgeInsets.zero,
+            leading: const Icon(Icons.psychology_outlined),
+            title: const Text('Free offline AI'),
+            subtitle: const Text('Tutor, summarizer and model storage'),
+            onTap: () => Navigator.push(context,
+              MaterialPageRoute<void>(builder: (_) => const StudyAiPage())),
           ),
           const Section('Reminders'),
           SwitchListTile(
@@ -193,7 +204,7 @@ class _SettingsPageState extends State<SettingsPage> {
           ),
           const Section('Privacy & connectivity'),
           const Text(
-            'No StudyForge sign-in, subscriptions, advertising or analytics. Your study records stay on this device. Online topic search contacts Wikipedia; learning-resource links open in your browser. Saved reference notes can be read offline. PDFs are never uploaded.',
+            'No StudyForge sign-in, subscriptions, advertising or analytics. Your study records stay on this device. Online topic search contacts Wikipedia; learning-resource links open in your browser. Saved reference notes can be read offline. AI runs on this phone after a one-time model download from Hugging Face. No paid API. PDFs and AI questions are never uploaded.',
           ),
           const Section('Data controls'),
           OutlinedButton.icon(
@@ -209,6 +220,7 @@ class _SettingsPageState extends State<SettingsPage> {
                       return;
                     }
                     await app.store.clear();
+                    await (await AiModelFile.open()).remove();
                     await app.reminders.plugin.cancelAll();
                     await app.changed();
                     await app.refreshPreferences();
@@ -217,9 +229,11 @@ class _SettingsPageState extends State<SettingsPage> {
             icon: const Icon(Icons.delete_forever_outlined),
             label: const Text('Delete all data'),
           ),
+          TextButton(onPressed: () => showLicensePage(context: context),
+            child: const Text('Open-source licenses')),
           const SizedBox(height: 24),
           const Text(
-            'StudyForge 1.0 • Testing build\nMade for focused, affordable study.',
+            'StudyForge 1.1 • Testing build\nMade for focused, affordable study.',
             textAlign: TextAlign.center,
           ),
         ],

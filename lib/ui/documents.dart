@@ -5,6 +5,7 @@ import '../application.dart';
 import '../data/models.dart';
 import 'common.dart';
 import 'editors.dart';
+import 'ai.dart';
 
 class DocumentPage extends StatelessWidget {
   final String entryId;
@@ -98,6 +99,16 @@ class DocumentPage extends StatelessWidget {
               ],
               const SizedBox(height: 20),
               SelectableText(e.body.isEmpty ? 'No written notes yet.' : e.body),
+              if (e.body.trim().isNotEmpty) ...[
+                const SizedBox(height: 16),
+                OutlinedButton.icon(
+                  onPressed: () => Navigator.push(context,
+                    MaterialPageRoute<void>(builder: (_) => StudyAiPage(
+                      initialText: e.body, courseId: e.courseId))),
+                  icon: const Icon(Icons.auto_awesome_outlined),
+                  label: const Text('Summarize written text with AI'),
+                ),
+              ],
             ],
           ),
         );

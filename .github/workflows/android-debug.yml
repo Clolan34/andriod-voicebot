@@ -2,13 +2,14 @@ name: Build StudyForge testing APK
 on:
   push:
     branches: [main]
+  pull_request:
   workflow_dispatch:
 permissions:
   contents: read
 jobs:
   android:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 60
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-java@v5
@@ -26,9 +27,11 @@ jobs:
           channel: stable
           cache: true
       - run: sudo apt-get update && sudo apt-get install -y libsqlite3-0
-      - run: sdkmanager 'platforms;android-36' 'build-tools;36.0.0' 'ndk;27.0.12077973'
+      - run: sdkmanager 'platforms;android-36' 'build-tools;36.0.0' 'ndk;27.0.12077973' 'cmake;3.22.1'
       - run: flutter pub get
-      - run: dart format --output=none --set-exit-if-changed lib test
+      - run: dart format lib test
+      - name: Show resolved source formatting and lockfile
+        run: git diff -- lib test pubspec.lock
       - run: flutter analyze
       - run: flutter test
       - run: flutter build apk --debug

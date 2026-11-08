@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'application.dart';
 import 'data/files.dart';
 import 'data/reminders.dart';
@@ -13,6 +15,10 @@ import 'ui/settings.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  LicenseRegistry.addLicense(() async* {
+    yield LicenseEntryWithLineBreaks(['llama.cpp'],
+      await rootBundle.loadString('assets/llama-license.txt'));
+  });
   try {
     final store = await StudyStore.open();
     final files = await DocumentFiles.open();
