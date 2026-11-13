@@ -189,6 +189,7 @@ void main() {
     );
     expect(find.text('Set up offline AI'), findsOneWidget);
     await tester.ensureVisible(find.text('Download free model'));
+    await settle(tester);
     await tester.tap(find.text('Download free model'));
     await settle(tester);
     expect(find.text('Download the free model?'), findsOneWidget);
