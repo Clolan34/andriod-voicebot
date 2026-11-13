@@ -98,6 +98,7 @@ class _StudyAiPageState extends State<StudyAiPage> with WidgetsBindingObserver {
           'Download the free model?',
           'SmolLM2 is about 386 MB. Use Wi-Fi and allow at least 800 MB free for setup. '
               'There are no API fees; normal mobile-data charges may apply. Keep this screen open.',
+          action: 'Download',
         )) {
       return;
     }
@@ -293,6 +294,7 @@ class _StudyAiPageState extends State<StudyAiPage> with WidgetsBindingObserver {
       context,
       'Remove the AI model?',
       'This frees about 386 MB. Saved notes stay available. Download the model again to use AI.',
+      action: 'Remove model',
     )) {
       return;
     }
