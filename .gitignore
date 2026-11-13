@@ -11,3 +11,6 @@ android/key.properties
 *.keystore
 .idea/
 *.iml
+.env
+.env.*
+*.gguf

@@ -1,7 +1,7 @@
 name: studyforge
 description: A private, offline-capable study companion for university students.
 publish_to: none
-version: 1.0.0+1
+version: 1.1.0+2
 environment:
   sdk: '>=3.9.0 <4.0.0'
 dependencies:
@@ -19,6 +19,7 @@ dependencies:
   timezone: 0.10.1
   flutter_timezone: 4.1.1
   http: 1.5.0
+  crypto: 3.0.8
   intl: 0.20.2
   url_launcher: 6.3.2
 dev_dependencies:
@@ -29,3 +30,5 @@ dev_dependencies:
   sqlite3: 2.9.4 # Tests use the host SQLite library; no downloaded native hook.
 flutter:
   uses-material-design: true
+  assets:
+    - assets/llama-license.txt
