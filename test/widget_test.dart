@@ -182,6 +182,11 @@ void main() {
       ),
     );
     await settle(tester);
+    await tester.scrollUntilVisible(
+      find.text('Set up offline AI'),
+      200,
+      scrollable: find.byType(Scrollable).first,
+    );
     expect(find.text('Set up offline AI'), findsOneWidget);
     await tester.ensureVisible(find.text('Download free model'));
     await tester.tap(find.text('Download free model'));
